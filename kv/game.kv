@@ -1,0 +1,106 @@
+<GameCard>
+    orientation: "vertical"
+    size_hint: None, None
+    spacing: "10dp"
+    padding: [0,"10dp",0,0]
+    pos_hint: {"center_x": .5,"center_y": .5}
+    size: "200dp", "380dp"
+    FloatLayout:
+        id: poster_container
+        size_hint_y: None
+        height: dp(225)
+
+        FitImage:
+            pos_hint: {"center_x": 0.5, "y": 0}
+            source: root.source
+            size_hint: None, None
+            size: "180dp", "225dp"
+            allow_stretch: True
+            keep_ratio: False
+            theme_elevation_level: "Custom"
+            elevation_level: 1
+            theme_shadow_offset: "Custom"
+            shadow_offset: 0, -6
+            theme_shadow_softness: "Custom"
+            shadow_softness: 4
+            radius: [18, 18, 18, 18]
+
+        MDChip:
+            pos_hint: {"x": 0.015, "top": 0.95}
+            theme_bg_color: "Custom"
+            md_bg_color: 0.2, 0.6, 0.8, 1
+            theme_line_color: "Custom"
+            line_color: 0.2, 0.6, 0.8, 1
+            radius: [50, 50, 50, 50]
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            theme_shadow_offset: "Custom"
+            shadow_offset: 0, -6
+            theme_shadow_softness: "Custom"
+            shadow_softness: 4
+
+            MDChipText:
+                text: root.rating
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+        MDChip:
+            pos_hint: {"x": 0.015, "top": 0.77}
+            theme_bg_color: "Custom"
+            md_bg_color: 'grey'
+            theme_line_color: "Custom"
+            line_color: 'grey'
+            radius: [50, 50, 50, 50]
+            theme_elevation_level: "Custom"
+            elevation_level: 2
+            theme_shadow_offset: "Custom"
+            shadow_offset: 0, -6
+            theme_shadow_softness: "Custom"
+            shadow_softness: 4
+            on_release: root.show_platforms_dialog()
+
+            MDChipLeadingIcon:
+                icon: root.platform_icon
+                theme_text_color: "Custom"
+                text_color: 0.7, 0.7, 0.7, 0.7
+
+            MDChipText:
+                text: root.platforms_display_text
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
+
+    MDBoxLayout:
+        padding: ["10dp",0,"10dp",0]
+        orientation: 'vertical'
+
+        MDLabel:
+            text: root.title
+            color: "black"
+            font_style: "Headline"
+            role: "small"
+            bold: True
+            size_hint_y: None
+            adaptive_height: True
+
+        MDLabel:
+            text: ', '.join(root.genres)
+            color: "grey"
+            size_hint_y: None
+            height: "25dp"
+
+        MDLabel:
+            text: root.date
+            color: "grey"
+            text_size: self.width, self.height
+            size_hint_y: 1
+            valign: "top"
+
+MDScreen:
+    theme_bg_color: "Custom"
+    md_bg_color: self.theme_cls.backgroundColor
+
+    MDBoxLayout:
+        id: box
+        adaptive_size: True
+        spacing: "12dp"
+        pos_hint: {"center_x": .5, "center_y": .5}

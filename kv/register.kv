@@ -1,0 +1,64 @@
+<RegisterScreen>:
+    md_bg_color: self.theme_cls.backgroundColor
+    name: 'register'
+    MDAnchorLayout:
+        MDBoxLayout:
+            orientation: 'vertical'
+            spacing: dp(20)
+            padding: dp(32)
+            adaptive_height: True
+            pos_hint: {'center_y': 0.5}
+            size_hint_x: None
+            width: dp(450)
+
+            MDLabel:
+                text: "Регистрация"
+                font_style: "Display"
+                role: 'small'
+                halign: "center"
+                size_hint_y: None
+                height: self.texture_size[1]
+
+            MDTextField:
+                id: username
+                mode: "filled"
+                size_hint_x: 0.8
+                pos_hint: {'center_x': 0.5}
+
+                MDTextFieldHintText:
+                    text: "Имя пользователя"
+
+            MDTextField:
+                id: password
+                mode: "filled"
+                password: True
+                size_hint_x: 0.8
+                pos_hint: {'center_x': 0.5}
+
+                MDTextFieldHintText:
+                    text: "Пароль"
+
+            MDTextField:
+                id: confirm
+                mode: "filled"
+                password: True
+                size_hint_x: 0.8
+                pos_hint: {'center_x': 0.5}
+
+                MDTextFieldHintText:
+                    text: "Подтверждение пароля"
+
+            MDButton:
+                style: 'filled'
+                size_hint_x: 0.5
+                pos_hint: {'center_x': 0.5}
+                on_release: root.try_register()
+                MDButtonText:
+                    text: "Зарегистрироваться"
+
+            MDButton:
+                style: 'text'
+                pos_hint: {'center_x': 0.5}
+                on_release: root.go_to_login()
+                MDButtonText:
+                    text: "Уже есть аккаунт? Войти"

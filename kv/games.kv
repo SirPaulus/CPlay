@@ -1,0 +1,72 @@
+<GamesScreen>:
+    md_bg_color: self.theme_cls.backgroundColor
+    name: 'games'
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            type: "small"
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "arrow-left"
+            MDTopAppBarTitle:
+                text: "Рекомендации"
+                halign: "center"
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "account-circle-outline"
+
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            padding: "8dp"
+            spacing: "8dp"
+            MDBoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                id: admin_button
+            MDLabel:
+                text: "Жанры:"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1]
+            MDScrollView:
+                size_hint_y: None
+                height: "56dp"
+                do_scroll_x: True
+                do_scroll_y: False
+                MDBoxLayout:
+                    id: genres_chips
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: "48dp"
+                    spacing: "8dp"
+                    padding: "8dp"
+                    adaptive_width: True
+            MDLabel:
+                text: "Платформы:"
+                theme_text_color: "Secondary"
+                size_hint_y: None
+                height: self.texture_size[1]
+            MDScrollView:
+                size_hint_y: None
+                height: "56dp"
+                do_scroll_x: True
+                do_scroll_y: False
+                MDBoxLayout:
+                    id: platforms_chips
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: "48dp"
+                    spacing: "8dp"
+                    padding: "8dp"
+                    adaptive_width: True
+
+        MDScrollView:
+            MDStackLayout:
+                id: games_list
+                adaptive_height: True
+                spacing: dp(5)
+                padding: dp(5)

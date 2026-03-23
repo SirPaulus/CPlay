@@ -1,0 +1,108 @@
+<LoginScreen>:
+    name: 'login'
+    FloatLayout:
+        FitImage:
+            source: './assets/background1.png'
+            size_hint: 1, 1
+        MDAnchorLayout:
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: dp(20)
+                padding: dp(32)
+                adaptive_height: True
+                pos_hint: {'center_y': 0.5}
+                size_hint_x: None
+                width: dp(450)
+
+                FitImage:
+                    source: './assets/cplay.png'
+                    size_hint: 0.65, None
+                    height: dp(50)
+                    fit_mode: "fill"
+                    pos_hint: {"center_x": 0.5}
+
+                MDLabel:
+                    text: "Ваш личный проводник в мир игровой индустрии"
+                    color: "#2ed5fa"
+                    font_style: "Title"
+                    role: "large"
+                    size_hint_y: None
+                    adaptive_height: True
+                    halign: "center"
+
+                Widget:
+                    size_hint_y: None
+                    height: "50dp"   # нужный отступ
+
+                MDLabel:
+                    text: "Вход в аккаунт"
+                    color: "#ffffff"
+                    theme_elevation_level: "Custom"
+                    elevation_level: 2
+                    theme_shadow_offset: "Custom"
+                    shadow_offset: 0, -6
+                    theme_shadow_softness: "Custom"
+                    shadow_softness: 4
+                    font_style: "Display"
+                    role: 'small'
+                    halign: "center"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+                MDTextField:
+                    id: username
+                    mode: "filled"
+                    size_hint_x: 0.8
+                    pos_hint: {'center_x': 0.5}
+
+                    MDTextFieldHintText:
+                        text: "Имя пользователя"
+
+                MDTextField:
+                    id: password
+                    mode: "filled"
+                    password: True
+                    size_hint_x: 0.8
+                    pos_hint: {'center_x': 0.5}
+
+                    MDTextFieldHintText:
+                        text: "Пароль"
+
+                MDButton:
+                    style: 'filled'
+                    theme_width: "Custom"
+                    size_hint_x: .5
+                    pos_hint: {'center_x': 0.5}
+                    on_release: root.try_login()
+
+                    MDButtonText:
+                        text: "Войти"
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                MDBoxLayout:
+                    adaptive_height: True
+                    spacing: dp(10)
+                    pos_hint: {'center_x': 0.5}
+                    size_hint_x: 0.8
+
+                    MDButton:
+                        style: 'filled'
+                        on_release: root.go_to_register()
+                        theme_width: "Custom"
+                        size_hint_x: .5
+
+                        MDButtonText:
+                            text: "Регистрация"
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDButton:
+                        style: 'filled'
+                        on_release: root.guest_login()
+                        theme_width: "Custom"
+                        size_hint_x: .5
+                        theme_bg_color: "Custom"
+                        md_bg_color: (.18, .84, .98, 0.6)
+
+                        MDButtonText:
+                            text: "Гость"
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
