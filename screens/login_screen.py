@@ -1,17 +1,14 @@
 from kivymd.uix.screen import MDScreen
-from kivymd.app import MDApp
 from kivymd.uix.dialog import (
     MDDialog,
-    MDDialogIcon,
     MDDialogHeadlineText,
-    MDDialogSupportingText,
     MDDialogButtonContainer,
-    MDDialogContentContainer,
 )
 from kivy.uix.widget import Widget
 from kivymd.uix.button import MDButton, MDButtonText
 from utils.auth import hash_password
 from models.database import login_user, set_current_user
+from kivymd.app import MDApp
 
 
 class LoginScreen(MDScreen):
@@ -31,6 +28,8 @@ class LoginScreen(MDScreen):
             # Успешный вход
             set_current_user(user)
             # Переходим на главный экран (preferences)
+            app = MDApp.get_running_app()
+            app.update_navigation_menu()
             self.manager.current = 'games'
         else:
             self.show_dialog("Неверное имя пользователя или пароль")
@@ -43,19 +42,17 @@ class LoginScreen(MDScreen):
 
     def show_dialog(self, text):
         """Показывает диалог с ошибкой."""
-        if not self.dialog:
-            self.dialog = MDDialog(
-                MDDialogHeadlineText(text=text),
-                MDDialogButtonContainer(
-                    Widget(),
-                    MDButton(
-                        MDButtonText(text="OK"),
-                        style='text', on_release=lambda x: self.dialog.dismiss()),
-                    Widget()
-                )
+        self.dialog = MDDialog(
+            MDDialogHeadlineText(text=text),
+            MDDialogButtonContainer(
+                Widget(),
+                MDButton(
+                    MDButtonText(text="OK"),
+                    style='text', on_release=lambda x: self.dialog.dismiss()),
+                Widget()
             )
-        else:
-            self.dialog.text = text
+        )
+        self.dialog.text = text
         self.dialog.open()
 
     def go_to_register(self):

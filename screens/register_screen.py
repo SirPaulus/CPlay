@@ -39,17 +39,15 @@ class RegisterScreen(MDScreen):
             self.show_dialog("Пользователь с таким именем уже существует")
 
     def show_dialog(self, text):
-        if not self.dialog:
-            self.dialog = MDDialog(
-                MDDialogHeadlineText(text=text),
-                MDDialogButtonContainer(
-                    Widget(),
-                    MDButton(
-                        MDButtonText(text="OK"), style='text', on_release=lambda x: self.dialog.dismiss()),
-                    Widget())
-            )
-        else:
-            self.dialog.text = text
+        self.dialog = MDDialog(
+            MDDialogHeadlineText(text=text),
+            MDDialogButtonContainer(
+                Widget(),
+                MDButton(
+                    MDButtonText(text="OK"), style='text', on_release=lambda x: self.dialog.dismiss()),
+                Widget())
+        )
+        self.dialog.text = text
         self.dialog.open()
 
     def go_to_login(self):

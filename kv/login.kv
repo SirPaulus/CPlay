@@ -2,7 +2,7 @@
     name: 'login'
     FloatLayout:
         FitImage:
-            source: './assets/background1.png'
+            source: './assets/background.png'
             size_hint: 1, 1
         MDAnchorLayout:
             MDBoxLayout:
@@ -74,9 +74,12 @@
                     size_hint_x: .5
                     pos_hint: {'center_x': 0.5}
                     on_release: root.try_login()
+                    theme_bg_color: "Custom"
+                    md_bg_color: (.18, .84, .98, 0.6)
 
                     MDButtonText:
                         text: "Войти"
+                        color: "#ffffff"
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
                 MDBoxLayout:
@@ -90,9 +93,12 @@
                         on_release: root.go_to_register()
                         theme_width: "Custom"
                         size_hint_x: .5
+                        theme_bg_color: "Custom"
+                        md_bg_color: (.18, .84, .98, 0.6)
 
                         MDButtonText:
                             text: "Регистрация"
+                            color: "#ffffff"
                             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
                     MDButton:
@@ -105,4 +111,5 @@
 
                         MDButtonText:
                             text: "Гость"
+                            color: "#ffffff"
                             pos_hint: {'center_x': 0.5, 'center_y': 0.5}

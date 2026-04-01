@@ -5,6 +5,12 @@
     padding: [0,"10dp",0,0]
     pos_hint: {"center_x": .5,"center_y": .5}
     size: "200dp", "380dp"
+    theme_bg_color: "Custom"
+    md_bg_color: .74, .74, .74, 0.75
+    style: "outlined"
+    theme_line_color: "Custom"
+    line_color: 1, 1, 1, 0.35
+    on_release: root.open_details()
     FloatLayout:
         id: poster_container
         size_hint_y: None
@@ -84,23 +90,13 @@
 
         MDLabel:
             text: ', '.join(root.genres)
-            color: "grey"
+            color: "black"
             size_hint_y: None
             height: "25dp"
 
         MDLabel:
             text: root.date
-            color: "grey"
+            color: "black"
             text_size: self.width, self.height
             size_hint_y: 1
             valign: "top"
-
-MDScreen:
-    theme_bg_color: "Custom"
-    md_bg_color: self.theme_cls.backgroundColor
-
-    MDBoxLayout:
-        id: box
-        adaptive_size: True
-        spacing: "12dp"
-        pos_hint: {"center_x": .5, "center_y": .5}

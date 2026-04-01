@@ -1,5 +1,5 @@
-<GamesScreen>:
-    name: 'games'
+<FavoritesScreen>:
+    name: 'favorites'
     FloatLayout:
         FitImage:
             source: './assets/background.png'
@@ -18,7 +18,7 @@
                         icon_color: "#ffffff"
                         on_release: app.nav_drawer.set_state("toggle")
                 MDTopAppBarTitle:
-                    text: "Рекомендации"
+                    text: "Избранное"
                     halign: "center"
                     theme_text_color: "Custom"
                     text_color: "#ffffff"
@@ -103,7 +103,7 @@
 
             MDScrollView:
                 MDStackLayout:
-                    id: games_list
+                    id: favorites_list
                     adaptive_height: True
                     spacing: dp(5)
                     padding: dp(5)
