@@ -9,6 +9,9 @@ package.name = cplay
 # (str) Package domain (needed for android/ios packaging)
 package.domain = com.example
 
+# (str) Version of the application
+version = 1.0.0
+
 # (str) Source code where the main.py live
 source.dir = .
 
