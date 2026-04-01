@@ -16,7 +16,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,ttf,txt,db
 
 # (list) Requirements
-requirements = python3,kivy==2.3.1,kivymd==2.0.1,asynckivy,requests
+requirements = python3,kivy==2.3.1,kivymd==2.0.1,asynckivy
 
 # (str) Android API to use (default: 31)
 android.api = 31
@@ -58,7 +58,7 @@ wakelock = False
 # android.logcat_filters = *:S python:D
 
 # (str) Additional Java classes to include
-# android.add_src =
+android.add_src = assets,data
 
 # (str) Additional Android manifest elements
 # android.manifest_application_attributes = 'android:requestLegacyExternalStorage="true"'
