@@ -1,4 +1,4 @@
-name: Build Android APK with Docker
+name: Build Android APK
 
 on:
   push:
@@ -10,19 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: kivy/buildozer:latest
-      # Опционально: если нужны права root (иногда требуется для записи кэша)
       options: --user root
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Build APK
-        run: |
-          buildozer android debug --verbose
-
+        run: buildozer android debug --verbose
+        env:
+          BUILDOZER_IGNORE_ROOT: 1
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: СPlay-APK
+          name: CPlay-APK
           path: bin/*.apk
