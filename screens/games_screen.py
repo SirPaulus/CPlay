@@ -1,7 +1,6 @@
 from kivy.metrics import dp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.chip import MDChip, MDChipText, MDChipLeadingIcon
-from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
 from models.database import fetch_games_by_criteria, get_all_genres, get_all_platforms, get_current_user, add_game, \
     save_game_image
 from kivymd.uix.appbar import MDActionTopAppBarButton
@@ -162,7 +161,7 @@ class GamesScreen(MDScreen):
             mode='outlined',
         )
         rating_field = MDTextField(
-            MDTextFieldHintText(text='Рейтинг'),
+            MDTextFieldHintText(text='Рейтинг (0-10)'),
             MDTextFieldHelperText(text='', mode='on_error'),
             input_filter='float',
             mode='outlined',

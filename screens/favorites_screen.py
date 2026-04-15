@@ -1,12 +1,7 @@
-from kivy.metrics import dp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.chip import MDChip, MDChipText, MDChipLeadingIcon
-from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
-from models.database import get_favorite_games, get_all_genres, get_all_platforms, get_current_user, add_game
-from kivymd.uix.appbar import MDActionTopAppBarButton
+from models.database import get_favorite_games, get_all_genres, get_all_platforms, get_current_user
 from widgets.game_card import GameCard
-from kivymd.uix.label import MDLabel
-
 
 
 class FavoritesScreen(MDScreen):

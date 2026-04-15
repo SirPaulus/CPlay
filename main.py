@@ -2,6 +2,7 @@
 Главный файл приложения. Загружает конфигурацию, инициализирует БД и запускает приложение.
 """
 import os
+from kivy.properties import StringProperty
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
@@ -24,11 +25,14 @@ from screens.favorites_screen import FavoritesScreen
 from kivymd.uix.bottomsheet import MDBottomSheet, MDBottomSheetDragHandle, MDBottomSheetDragHandleTitle, \
     MDBottomSheetDragHandleButton
 from kivymd.uix.boxlayout import MDBoxLayout
-from models.database import init_db, DB_PATH, get_current_user, set_current_user
-from kivymd.theming import ThemableBehavior
+from models.database import init_db, get_current_user, set_current_user, get_db_path
+from utils.path_utils import resource_path
 
 
 class CPlayApp(MDApp):
+    background_source = StringProperty(resource_path('assets/background.png'))
+    cplay_logo_source = StringProperty(resource_path('assets/cplay.png'))
+
     def build(self):
         self.theme_cls.theme_style = "Dark"
         # Загрузка KV-файлов экранов
@@ -108,7 +112,7 @@ class CPlayApp(MDApp):
 
     def init_database(self):
         """Создаёт структуру БД, если она отсутствует."""
-        if not os.path.exists(DB_PATH):
+        if not os.path.exists(get_db_path()):
             init_db()  # создаёт таблицы и добавляет тестовые данные
 
     def is_admin(self):

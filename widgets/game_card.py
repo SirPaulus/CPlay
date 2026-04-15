@@ -1,5 +1,5 @@
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ListProperty, NumericProperty, BooleanProperty
+from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivymd.uix.chip import MDChip, MDChipText
 from kivymd.app import MDApp
 from kivymd.uix.fitimage import FitImage
@@ -29,6 +29,7 @@ from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
 import os
 from kivymd.uix.card import MDCard
+from utils.path_utils import resource_path
 
 
 class GameCard(MDCard):
@@ -46,8 +47,8 @@ class GameCard(MDCard):
 
     icon_map = {
         'PC': 'microsoft-windows',
-        'PS4': 'sony-playstation',
-        'Xbox One': 'microsoft-xbox',
+        'PS': 'sony-playstation',
+        'Xbox': 'microsoft-xbox',
         'Switch': 'nintendo-switch',
         'Mobile': 'android',
     }
@@ -83,7 +84,7 @@ class GameCard(MDCard):
                                         adaptive_height=True)
         poster_image = FitImage(
             pos_hint={"center_x": 0.5, "y": 0},
-            source=f"./assets/{game_data['id']}.jpg",
+            source=self._get_image_source(),
             size_hint=(None, None),
             size=("180dp", "225dp"),
             allow_stretch=True,
@@ -516,6 +517,10 @@ class GameCard(MDCard):
             snackbar.open()
             if self.on_delete_callback:
                 Clock.schedule_once(lambda dt: self.on_delete_callback(), 0)  # обновляем список игр
+            # Обновляем текущее изображение, если карточка ещё на экране
+            if hasattr(self.ids, 'poster_image'):
+                self.ids.poster_image.source = self._get_image_source()
+                self.ids.poster_image.reload()
         except Exception as e:
             print(f'Ошибка при обновлении: {e}')
             from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
@@ -570,6 +575,7 @@ class GameCard(MDCard):
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
         self._update_platforms_display()
+        self.source = self._get_image_source()
         user = get_current_user()
         if user['role'] == 'admin':
             self.admin_panel()
@@ -597,7 +603,6 @@ class GameCard(MDCard):
                 self.favorite_icon.icon = 'heart'
 
     def choose_image_for_edit(self, filename_label):
-
         filechooser = FileChooserListView(
             filters=['*.jpg', '*.jpeg', '*.png'],
             path=os.path.expanduser('~')
@@ -620,3 +625,14 @@ class GameCard(MDCard):
         layout.add_widget(button_box)
         popup = Popup(title="Выберите изображение", content=layout, size_hint=(0.9, 0.9))
         popup.open()
+
+    def _get_image_source(self):
+        app = MDApp.get_running_app()
+        images_dir = os.path.join(app.user_data_dir, 'images')
+        user_path = os.path.join(images_dir, f"{self.game_id}.jpg")
+        if os.path.exists(user_path):
+            return user_path
+        else:
+            # Для встроенных изображений используем resource_path
+            # Функцию resource_path нужно импортировать (лучше вынести в utils)
+            return resource_path(f'assets/{self.game_id}.jpg')

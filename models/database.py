@@ -1,17 +1,27 @@
 import sqlite3
 import os
 import shutil
-from datetime import datetime
+from kivymd.app import MDApp
+from utils.auth import hash_password
 
-DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'games.db')
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), '..', 'assets')
 
 # Глобальная переменная для хранения текущего пользователя
 _current_user = None
 
 
+def get_db_path():
+    app = MDApp.get_running_app()
+    if app is None:
+        # fallback для случаев, когда приложение ещё не инициализировано
+        return os.path.join(os.path.dirname(__file__), '..', 'data', 'games.db')
+    db_dir = os.path.join(app.user_data_dir, 'data')
+    os.makedirs(db_dir, exist_ok=True)
+    return os.path.join(db_dir, 'games.db')
+
+
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    return sqlite3.connect(get_db_path())
 
 
 def init_db():
@@ -89,6 +99,9 @@ def init_db():
     # Добавляем тестовые игры, если таблица games пуста
     c.execute("SELECT COUNT(*) FROM games")
     if c.fetchone()[0] == 0:
+        c.execute("INSERT INTO users (username, password, role_id) VALUES (?,?,?)",
+                  ('admin', hash_password('admin'), 2))
+        conn.commit()
         # Сначала добавляем игры
         sample_games = [
             ("The Witcher 3", "Open world RPG about a monster slayer", 9.5),
@@ -263,13 +276,15 @@ def _fetch_games_by_ids(game_ids, genres=None, platforms=None, search=None):
     params = list(game_ids)
 
     if genres:
-        query += " AND games.id IN (SELECT game_id FROM game_genres JOIN genres ON game_genres.genre_id = genres.id WHERE genres.name IN ("
+        query += "AND games.id IN (SELECT game_id FROM game_genres JOIN genres ON game_genres.genre_id = genres.id " \
+                 "WHERE genres.name IN ("
         query += ",".join(["?"] * len(genres))
         query += "))"
         params.extend(genres)
 
     if platforms:
-        query += " AND games.id IN (SELECT game_id FROM game_platforms JOIN platforms ON game_platforms.platform_id = platforms.id WHERE platforms.name IN ("
+        query += "AND games.id IN (SELECT game_id FROM game_platforms JOIN platforms ON game_platforms.platform_id = " \
+                 "platforms.id WHERE platforms.name IN ("
         query += ",".join(["?"] * len(platforms))
         query += "))"
         params.extend(platforms)
@@ -322,13 +337,15 @@ def fetch_games_by_criteria(genres=None, platforms=None, search=None):
     params = []
 
     if genres:
-        query += " AND games.id IN (SELECT game_id FROM game_genres JOIN genres ON game_genres.genre_id = genres.id WHERE genres.name IN ("
+        query += "AND games.id IN (SELECT game_id FROM game_genres JOIN genres ON game_genres.genre_id = genres.id " \
+                 "WHERE genres.name IN ("
         query += ",".join(["?"] * len(genres))
         query += "))"
         params.extend(genres)
 
     if platforms:
-        query += " AND games.id IN (SELECT game_id FROM game_platforms JOIN platforms ON game_platforms.platform_id = platforms.id WHERE platforms.name IN ("
+        query += "AND games.id IN (SELECT game_id FROM game_platforms JOIN platforms ON game_platforms.platform_id = " \
+                 "platforms.id WHERE platforms.name IN ("
         query += ",".join(["?"] * len(platforms))
         query += "))"
         params.extend(platforms)
@@ -485,17 +502,17 @@ def update_game(game_id, title, description, rating, genre_ids, platform_ids):
 
 
 def save_game_image(game_id, image_path):
-    """
-    Копирует выбранное изображение в папку assets и переименовывает в <game_id>.jpg.
-    Если image_path пуст или None, ничего не делает.
-    """
     if not image_path or not os.path.exists(image_path):
         return False
-    assets_dir = os.path.join(os.path.dirname(__file__), '..', 'assets')
-    os.makedirs(assets_dir, exist_ok=True)
-    target_path = os.path.join(assets_dir, f"{game_id}.jpg")
+    app = MDApp.get_running_app()
+    images_dir = os.path.join(app.user_data_dir, 'images')
+    os.makedirs(images_dir, exist_ok=True)
+    target_path = os.path.join(images_dir, f"{game_id}.jpg")
     try:
         shutil.copy2(image_path, target_path)
+        # Очищаем кэш Kivy по этому пути
+        from kivy.core.image import Image as CoreImage
+        CoreImage._cache.pop(target_path, None)
         return True
     except Exception as e:
         print(f"Ошибка копирования изображения: {e}")
@@ -503,9 +520,10 @@ def save_game_image(game_id, image_path):
 
 
 def delete_game_image(game_id):
-    """Удаляет изображение игры, если оно существует."""
-    assets_dir = os.path.join(os.path.dirname(__file__), '..', 'assets')
-    image_path = os.path.join(assets_dir, f"{game_id}.jpg")
+    """Удаляет изображение из user_data_dir/images/"""
+    app = MDApp.get_running_app()
+    images_dir = os.path.join(app.user_data_dir, 'images')
+    image_path = os.path.join(images_dir, f"{game_id}.jpg")
     if os.path.exists(image_path):
         try:
             os.remove(image_path)
